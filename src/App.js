@@ -1,19 +1,15 @@
-import { useEffect, useState } from "react";
-
-import axiosInstance from './axios';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Welcome from './pages/Welcome';
 
 function App() {
-  const [posts, setPosts] = useState([])
-  useEffect(() => {
-    axiosInstance
-    .get('posts/')
-    .then(res => setPosts(res.data))
-  }, [])
 
   return (
-    <div className="App">
+    <Router>
+      <Routes>
+        <Route path='/' element={<Welcome />}/>
 
-    </div>
+      </Routes>
+    </Router>
   );
 }
 
