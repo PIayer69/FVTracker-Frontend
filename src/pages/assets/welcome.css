@@ -1,9 +1,12 @@
 .link{
     font-weight: bold;
+    padding: .1rem .2rem;
+    margin: .1rem .2rem;
 }
 
 .link:hover{
-    border-bottom: 3px solid black;
+    background-color: rgb(204, 172, 204);
+    box-shadow: 0 0 5px 5px rgb(204, 172, 204);
 }
 
 .box-container{
@@ -38,4 +41,15 @@
     right: 15px;
     font-size: 1.3rem;
     font-weight: bold;
+}
+
+.box-error{
+    color: rgb(255, 65, 65);
+}
+
+.box-footer{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }

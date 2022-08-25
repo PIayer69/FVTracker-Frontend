@@ -15,8 +15,8 @@ const Welcome = () => {
     <div className="container center column">
         Strona główna
         <div>
-            <span className="link pointer transition" onClick={() => setOverlay({enabled: true, login: true})}>Zaloguj się </span>
-            lub <span className="link pointer transition" onClick={() => setOverlay({enabled: true, login: false})}>Zarejestruj</span>
+            <span className="link pointer transition" onClick={() => setOverlay({enabled: true, login: true})}>Zaloguj się</span>
+             lub <span className="link pointer transition" onClick={() => setOverlay({enabled: true, login: false})}>Zarejestruj</span>
         </div>
         {
             overlay.enabled 
