@@ -1,4 +1,4 @@
-input{
+form input{
     margin-bottom: .3rem;
     padding: .3rem .6rem;
     border-radius: 5px;
@@ -6,16 +6,16 @@ input{
     font-size: .85rem;
 }
 
-input:focus{
+form input:focus{
     outline: 2px solid gray;
 }
 
-input[type ='submit']{
+form input[type ='submit']{
     padding: .6rem;
     cursor: pointer;
     transition: .3s all ease;
 }
 
-input[type ='submit']:hover{
+form input[type ='submit']:hover{
     background-color: aliceblue;
 }
