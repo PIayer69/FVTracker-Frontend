@@ -1,5 +1,5 @@
 table{
-    /* border-collapse: collapse; */
+    border-collapse: collapse;
     height: 1px;
     table-layout: fixed;
 }

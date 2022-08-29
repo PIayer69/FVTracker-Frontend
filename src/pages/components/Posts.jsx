@@ -9,27 +9,19 @@ import Post from './Post';
 const Posts = () => {
   const [posts, setPosts] = useState({});
 
-  //State by which posts are filtered
-  //Defaults to cuurent year
+  //State by which posts are displayed and requested
+  //Defaults to curent year
   const [year, setYear] = useState(new Date().getFullYear());
 
-  //Filtered post are stored here
-  const [yearPosts, setYearPosts] = useState([]);
 
-
-  //Effect used to filter posts by set year
-  //Ran when posts are changed
   useEffect(() => {
-    setYearPosts(posts[year])
-  }, [posts, year]);
-
-    useEffect(() => {
-        axiosInstance
-        .get('/posts/')
-        .then(res => {
-            res.data ? setPosts(res.data) : setPosts([]);
-        })
-    }, [])
+      axiosInstance
+      .get('/posts/' + year + '/')
+      .then(res => {
+          res.data ? setPosts(res.data) : setPosts([]);
+          console.log(res.data);
+      })
+  }, [])
 
   return (
     <div>
@@ -41,14 +33,15 @@ const Posts = () => {
               <th>Wysłane</th>
               <th>Pobrane</th>
               <th>Wyprodukowane</th>
+              <th>Opcje</th>
 
             </tr>
           </thead>
           <tbody>
             {
-                yearPosts 
-                ? yearPosts.map((month) => Object.keys(month).map((key, index) => <MonthPosts key={key} setPosts={setPosts} posts={month[key]} month={key} />))
-                : <tr><td>Nie ma żadnych wpisów</td></tr>
+                posts
+                ? Object.keys(posts).map((key, index) => <MonthPosts key={key} setPosts={setPosts} posts={posts[key]} month={key} />)
+                : <tr><td colSpan={5}>Nie ma żadnych wpisów</td></tr>
             }
           </tbody>
         </table>

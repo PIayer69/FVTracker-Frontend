@@ -9,7 +9,7 @@ const MonthPosts = ({posts, month, setPosts}) => {
   return (
     <>
         <tr>
-            <td colSpan={4} onClick={() => setShowPosts((prev) => !prev)} className='month-row pointer'>
+            <td colSpan={5} onClick={() => setShowPosts((prev) => !prev)} className='month-row pointer'>
                 {monthString.toLocaleUpperCase()} <BiDownArrow />
             </td>
         </tr>

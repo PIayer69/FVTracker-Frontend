@@ -1,5 +1,6 @@
 import { FiEdit } from 'react-icons/fi';
 import { AiFillDelete } from 'react-icons/ai';
+import { ImCheckmark, ImCross } from 'react-icons/im';
 import { useState } from 'react';
 
 import axiosInstance from '../../axios';
@@ -17,7 +18,18 @@ const Post = ({data, setPosts}) => {
   const deletePost = () => {
     axiosInstance
     .delete('posts/' + data.id + '/')
-    .then(res => setPosts(res.data))
+    .then(res => {
+      if(res.status === 200){
+        setPosts((posts) => {
+          let newPosts = {}
+          console.log('Previous posts');
+          console.log(posts);
+          console.log('New posts');
+          Object.keys(posts).map((key, index) => {newPosts[key] = posts[key].filter(post => post.id !== data.id)})
+          return newPosts
+        })
+      }
+    })
     .catch(err => console.log(err))
   }
 
@@ -51,7 +63,6 @@ const Post = ({data, setPosts}) => {
           <td className='input-cell'><input type="number" name='sent' value={form.sent} onChange={(e) => handleChange(e)}/></td>
           <td className='input-cell'><input type="number" name='received' value={form.received} onChange={(e) => handleChange(e)}/></td>
           <td className='input-cell'><input type="number" name='produced' value={form.produced} onChange={(e) => handleChange(e)}/></td>
-          <td className='options-cell' onClick={editPost}>Save</td>
         </>
         : <>
         <td>{data.date}</td>
@@ -61,7 +72,14 @@ const Post = ({data, setPosts}) => {
         </>
       }
       
-      <td className='options-cell'><FiEdit onClick={toggleEdit} /> <AiFillDelete onClick={() => deletePost(data.id)}/></td>
+      <td className='options-cell'>
+        {
+          edit
+          ? <><ImCheckmark onClick={editPost} className='pointer' /> <ImCross className='pointer' onClick={toggleEdit} /></>
+          : <><FiEdit className='pointer' onClick={toggleEdit} /> <AiFillDelete className='pointer' onClick={() => deletePost(data.id)}/></>
+        }
+        
+      </td>
     </tr>
   )
 }
