@@ -22,10 +22,11 @@ const Post = ({data, setPosts}) => {
       if(res.status === 200){
         setPosts((posts) => {
           let newPosts = {}
-          console.log('Previous posts');
-          console.log(posts);
-          console.log('New posts');
-          Object.keys(posts).map((key, index) => {newPosts[key] = posts[key].filter(post => post.id !== data.id)})
+          Object.keys(posts).map((key, index) => {
+            if(posts[key].filter(post => post.id !== data.id).length)
+              return newPosts[key] = posts[key].filter(post => post.id !== data.id)
+            return null
+          })
           return newPosts
         })
       }
@@ -48,7 +49,13 @@ const Post = ({data, setPosts}) => {
     axiosInstance
     .patch('posts/' + data.id + '/', JSON.stringify(form))
     .then(res => {
-      setPosts(res.data);
+      setPosts((posts) => {
+        let newPosts = {}
+        Object.keys(posts).map((key, index) => (
+          newPosts[key] = posts[key].map(post => post.id === data.id ? res.data : post)
+        ))
+        return newPosts
+      })
       toggleEdit();
     })
     .catch(err => console.log(err))
@@ -75,7 +82,7 @@ const Post = ({data, setPosts}) => {
       <td className='options-cell'>
         {
           edit
-          ? <><ImCheckmark onClick={editPost} className='pointer' /> <ImCross className='pointer' onClick={toggleEdit} /></>
+          ? <><ImCheckmark size={18} color='green' onClick={editPost} className='pointer' /> <ImCross color='darkred' className='pointer' onClick={toggleEdit} /></>
           : <><FiEdit className='pointer' onClick={toggleEdit} /> <AiFillDelete className='pointer' onClick={() => deletePost(data.id)}/></>
         }
         

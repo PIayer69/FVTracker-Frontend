@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 import '../assets/posts.css';
 import axiosInstance from "../../axios"
 import MonthPosts from "./MonthPosts";
-import Post from './Post';
 
 
 const Posts = () => {
@@ -21,7 +20,7 @@ const Posts = () => {
           res.data ? setPosts(res.data) : setPosts([]);
           console.log(res.data);
       })
-  }, [])
+  }, [year])
 
   return (
     <div>
@@ -39,7 +38,7 @@ const Posts = () => {
           </thead>
           <tbody>
             {
-                posts
+                Object.entries(posts).length
                 ? Object.keys(posts).map((key, index) => <MonthPosts key={key} setPosts={setPosts} posts={posts[key]} month={key} />)
                 : <tr><td colSpan={5}>Nie ma żadnych wpisów</td></tr>
             }
