@@ -11,8 +11,8 @@ const MonthPosts = ({posts, month, setPosts}) => {
   return (
     <>
         <tr>
-            <td colSpan={5} onClick={() => setShowPosts((prev) => !prev)} className='month-row pointer'>
-                {monthString.toLocaleUpperCase()} <BiDownArrow />
+            <td colSpan={5} onClick={() => setShowPosts((prev) => !prev)} className={`month-row pointer transition ${showPosts ? 'month-row-clicked': ''}`}>
+                {monthString.toLocaleUpperCase()} {currentMonth === parseInt(month) ? '(teraz)' : ''} <BiDownArrow className="transition" />
             </td>
         </tr>
         {

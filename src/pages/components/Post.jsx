@@ -59,7 +59,7 @@ const Post = ({data, setPosts}) => {
       {
         edit
         ? <PostSaveEdit onAccept={editPost} onCancel={toggleEdit} initialForm={initialForm}/>
-        : <tr>
+        : <tr className='post-cell'>
             <td>{data.date}</td>
             <td>{data.sent}</td>
             <td>{data.received}</td>

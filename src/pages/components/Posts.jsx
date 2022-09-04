@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
+import { AiOutlinePlus } from 'react-icons/ai';
 
 import '../assets/posts.css';
 import axiosInstance from "../../axios"
@@ -22,7 +23,7 @@ const Posts = () => {
   const [year, setYear] = useState(currentYear);
 
   //If set to true inputs for new post are shown 
-  const [newPost, setNewPost] = useState(true);
+  const [newPost, setNewPost] = useState(false);
 
   //Years that are available to select
   const [availableYears, setAvailableYears] = useState([]);
@@ -62,7 +63,12 @@ const Posts = () => {
   }
 
   const addPost = (form) => {
-    console.log(JSON.stringify(form))
+    //Check if form doesn't have empty fields
+    if(Object.values(form).includes('')) {
+      //Show message here !!!
+      console.log('Empty fields');
+      return;
+    }
     axiosInstance
     .post('/posts/', JSON.stringify(form))
     .then(res => {
@@ -72,13 +78,17 @@ const Posts = () => {
 
   return (
     <div>
-        Your posts:
-        Select year:
-        <select name="year" value={year} onChange={(e) => setYear(e.target.value)} id="">
-          {
-            availableYears.map(year => (<option key={year} value={year}>{year}</option>))
-          }
-        </select>
+        <span className="top-container">
+          Your posts:
+          <div className="year-select-container">
+            Select year:
+            <select name="year" value={year} onChange={(e) => setYear(e.target.value)} className='year-select transition pointer'>
+              {
+                availableYears.map(year => (<option key={year} value={year}>{year}</option>))
+              }
+            </select>
+          </div>
+        </span>
         <table>
           <thead>
             <tr>
@@ -92,7 +102,16 @@ const Posts = () => {
           </thead>
           <tbody>
             {
-              newPost && <PostSaveEdit onAccept={addPost} onCancel={toggleNewPost} initialForm={initialForm}/>
+              newPost 
+              ? <PostSaveEdit onAccept={addPost} onCancel={toggleNewPost} initialForm={initialForm}/>
+              : <tr>
+                  <td colSpan={5} onClick={toggleNewPost} className='add-post-container pointer transition'>
+                    <span className="add-post-btn">
+                      <AiOutlinePlus size={19}/>
+                      Dodaj wpis
+                    </span>
+                  </td>
+                </tr>
             }
             {
                 Object.entries(posts).length
