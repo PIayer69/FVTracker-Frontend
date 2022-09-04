@@ -1,19 +1,19 @@
 import { FiEdit } from 'react-icons/fi';
 import { AiFillDelete } from 'react-icons/ai';
-import { ImCheckmark, ImCross } from 'react-icons/im';
 import { useState } from 'react';
 
 import axiosInstance from '../../axios';
+import PostSaveEdit from './PostSaveEdit';
 
 const Post = ({data, setPosts}) => {
+  const [edit, setEdit] = useState(false);
+
   const initialForm = Object.freeze({
     date: data.date,
     sent: data.sent,
     received: data.received,
     produced: data.produced
   })
-  const [form, setForm] = useState(initialForm)
-  const [edit, setEdit] = useState(false);
 
   const deletePost = () => {
     axiosInstance
@@ -38,14 +38,7 @@ const Post = ({data, setPosts}) => {
     setEdit((prev) => !prev)
   }
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  const editPost = () => {
+  const editPost = (form) => {
     axiosInstance
     .patch('posts/' + data.id + '/', JSON.stringify(form))
     .then(res => {
@@ -62,32 +55,22 @@ const Post = ({data, setPosts}) => {
   }
 
   return (
-    <tr>
+    <>
       {
         edit
-        ? <>
-          <td className='input-cell'><input name='date' value={form.date} onChange={(e) => handleChange(e)} type="date" /></td>
-          <td className='input-cell'><input type="number" name='sent' value={form.sent} onChange={(e) => handleChange(e)}/></td>
-          <td className='input-cell'><input type="number" name='received' value={form.received} onChange={(e) => handleChange(e)}/></td>
-          <td className='input-cell'><input type="number" name='produced' value={form.produced} onChange={(e) => handleChange(e)}/></td>
-        </>
-        : <>
-        <td>{data.date}</td>
-        <td>{data.sent}</td>
-        <td>{data.received}</td>
-        <td>{data.produced}</td>
-        </>
+        ? <PostSaveEdit onAccept={editPost} onCancel={toggleEdit} initialForm={initialForm}/>
+        : <tr>
+            <td>{data.date}</td>
+            <td>{data.sent}</td>
+            <td>{data.received}</td>
+            <td>{data.produced}</td>
+            <td className='options-cell'>
+              <FiEdit className='pointer' onClick={toggleEdit} /> 
+              <AiFillDelete className='pointer' onClick={() => deletePost(data.id)}/>
+            </td>
+        </tr>
       }
-      
-      <td className='options-cell'>
-        {
-          edit
-          ? <><ImCheckmark size={18} color='green' onClick={editPost} className='pointer' /> <ImCross color='darkred' className='pointer' onClick={toggleEdit} /></>
-          : <><FiEdit className='pointer' onClick={toggleEdit} /> <AiFillDelete className='pointer' onClick={() => deletePost(data.id)}/></>
-        }
-        
-      </td>
-    </tr>
+    </>
   )
 }
 
