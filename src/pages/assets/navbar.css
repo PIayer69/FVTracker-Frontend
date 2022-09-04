@@ -1,0 +1,29 @@
+nav{
+    width: 100vw;
+    background-color: #878;
+    padding: 1rem 2rem;
+}
+
+.nav-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1920px;
+}
+
+nav ul{
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li{
+    margin: .3rem;
+    cursor: pointer;
+    transition: .3s all ease;
+}
+
+nav ul li:hover{
+    color: #656;
+    
+}

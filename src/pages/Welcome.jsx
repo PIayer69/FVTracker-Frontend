@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import Login from './components/Login';
 import Register from './components/Register';
@@ -6,10 +7,11 @@ import Backdrop from './components/Backdrop';
 import './assets/welcome.css';
 import './assets/form.css';
 
-const Welcome = () => {
+const Welcome = ({page}) => {
+  let params = useParams();
     const [overlay, setOverlay] = useState({
-        enabled: false,
-        login: true
+        enabled: typeof params.page === 'undefined' ? false : true,
+        login: params.page === 'login'
     })
   return (
     <div className="container center column">

@@ -77,11 +77,11 @@ const Posts = () => {
   }
 
   return (
-    <div>
-        <span className="top-container">
-          Your posts:
+    <div className="posts-container">
+        <span className="posts-top-container">
+          Twoje wpisy:
           <div className="year-select-container">
-            Select year:
+            Wybierz rok:
             <select name="year" value={year} onChange={(e) => setYear(e.target.value)} className='year-select transition pointer'>
               {
                 availableYears.map(year => (<option key={year} value={year}>{year}</option>))
