@@ -104,7 +104,7 @@ const Posts = () => {
           </thead>
 
           <tbody>
-            {months.map((month) => <MonthPosts key={month} month={months[month]} post={posts[month - 1]} />)}
+            {months.map((month) => <MonthPosts key={month} month={months[month]} post={posts[month - 1]} setPosts={setPosts}/>)}
           </tbody>
         </table>
     </div>
