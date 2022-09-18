@@ -1,8 +1,13 @@
 .posts-container{
-    width: fit-content;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .posts-top-container{
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -30,15 +35,24 @@
 
 table{
     border-collapse: collapse;
-    height: 1px;
+    border: 1px solid black;
     table-layout: fixed;
 }
 
 table tr td, th{
-    border: 1px solid black;
+    border-bottom: 1px solid black;
     padding: .3rem;
     width: 8rem;
     text-align: center;
+}
+
+table td:nth-child(even){
+    background-color: #767;
+}
+
+table thead th{
+    background-color: #767;
+    border: 1px solid black;
 }
 
 .add-post-container{

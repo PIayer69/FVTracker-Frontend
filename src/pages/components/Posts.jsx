@@ -1,35 +1,25 @@
 import { useState, useEffect } from "react";
-import { AiOutlinePlus } from 'react-icons/ai';
 
 import '../assets/posts.css';
 import axiosInstance from "../../axios"
 import MonthPosts from "./MonthPosts";
-import PostSaveEdit from "./PostSaveEdit";
 
 
 const Posts = () => {
   const [posts, setPosts] = useState({});
-  const initialForm = Object.freeze({
-    date: '',
-    sent: '',
-    received: '',
-    produced: '',
-    user: 1
-  });
 
   //State by which posts are displayed and requested
   //Defaults to curent year
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
 
-  //If set to true inputs for new post are shown 
-  const [newPost, setNewPost] = useState(false);
-
   //Years that are available to select
   const [availableYears, setAvailableYears] = useState([]);
 
   //State that holds all post for every requested year
   const [allPosts, setAllPosts] = useState({});
+
+  const months = Array.from({length: 12}, (item, i) => i);
 
   useEffect(() => {
     setAllPosts((prev) => ({...prev, [year]: posts}));
@@ -57,10 +47,6 @@ const Posts = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year]);
 
-
-  const toggleNewPost = () => {
-    setNewPost(prev => !prev);
-  }
 
   const addPost = (form) => {
     //Check if form doesn't have empty fields
@@ -92,32 +78,33 @@ const Posts = () => {
         <table>
           <thead>
             <tr>
+              <th></th>
+              <th colSpan={2}>Wysłane</th>
+              <th colSpan={2}>Pobrane</th>
+              <th colSpan={2}>Wyprodukowane</th>
+              <th colSpan={2}>Autokonsumpcja</th>
+              <th colSpan={2}>Zużycie</th>
+              <th colSpan={2}>Nadmiar/niedobór energii</th>
+            </tr>
+            <tr>
               <th>Data</th>
-              <th>Wysłane</th>
-              <th>Pobrane</th>
-              <th>Wyprodukowane</th>
-              <th>Opcje</th>
-
+              <th>Ogólnie</th>
+              <th>Miesiąc</th>
+              <th>Ogólnie</th>
+              <th>Miesiąc</th>
+              <th>Ogólnie</th>
+              <th>Miesiąc</th>
+              <th>Miesiąc</th>
+              <th>%</th>
+              <th>Miesiąc</th>
+              <th>Średnie dzienne</th>
+              <th>kWh</th>
+              <th>PLN</th>
             </tr>
           </thead>
+
           <tbody>
-            {
-              newPost 
-              ? <PostSaveEdit onAccept={addPost} onCancel={toggleNewPost} initialForm={initialForm}/>
-              : <tr>
-                  <td colSpan={5} onClick={toggleNewPost} className='add-post-container pointer transition'>
-                    <span className="add-post-btn">
-                      <AiOutlinePlus size={19}/>
-                      Dodaj wpis
-                    </span>
-                  </td>
-                </tr>
-            }
-            {
-                Object.entries(posts).length
-                ? Object.keys(posts).map((key, index) => <MonthPosts key={key} setPosts={setPosts} posts={posts[key]} month={key} />)
-                : <tr><td colSpan={5}>Nie ma żadnych wpisów</td></tr>
-            }
+            {months.map((month) => <MonthPosts key={month} month={months[month]} post={posts[month - 1]} />)}
           </tbody>
         </table>
     </div>
