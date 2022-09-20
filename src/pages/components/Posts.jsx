@@ -14,7 +14,7 @@ const Posts = () => {
   const [year, setYear] = useState(currentYear);
 
   //Years that are available to select
-  const [availableYears, setAvailableYears] = useState([]);
+  const [availableYears, setAvailableYears] = useState([2021, 2022]);
 
   //State that holds all post for every requested year
   const [allPosts, setAllPosts] = useState({});
@@ -41,26 +41,10 @@ const Posts = () => {
       .then(res => {
           //Setting needed data
           res.data ? setPosts(res.data.posts) : setPosts([]);
-          setAvailableYears(res.data.years);
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year]);
-
-
-  const addPost = (form) => {
-    //Check if form doesn't have empty fields
-    if(Object.values(form).includes('')) {
-      //Show message here !!!
-      console.log('Empty fields');
-      return;
-    }
-    axiosInstance
-    .post('/posts/', JSON.stringify(form))
-    .then(res => {
-      console.log(res.data);
-    })
-  }
 
   return (
     <div className="posts-container">
@@ -79,12 +63,13 @@ const Posts = () => {
           <thead>
             <tr>
               <th></th>
-              <th colSpan={2}>Wysłane</th>
-              <th colSpan={2}>Pobrane</th>
-              <th colSpan={2}>Wyprodukowane</th>
-              <th colSpan={2}>Autokonsumpcja</th>
-              <th colSpan={2}>Zużycie</th>
-              <th colSpan={2}>Nadmiar/niedobór energii</th>
+              <th colSpan={2}>Produkcja (Falownik)</th>
+              <th colSpan={2}>Pobrane (1.8.0)</th>
+              <th colSpan={2}>Wysłane (2.8.0)</th>
+              <th colSpan={2}>Autokonsumpcja (kWh)</th>
+              <th colSpan={2}>Zużycie (kWh)</th>
+              <th colSpan={2}>Nadmiar/niedobór energii (kWh)</th>
+              <th rowSpan={2}>Zaoszczędzone środki</th>
             </tr>
             <tr>
               <th>Data</th>
@@ -104,7 +89,7 @@ const Posts = () => {
           </thead>
 
           <tbody>
-            {months.map((month) => <MonthPosts key={month} month={months[month]} post={posts[month - 1]} setPosts={setPosts}/>)}
+            {months.map((month) => <MonthPosts key={month} month={months[month]} post={posts[month + 1]} year={year} setPosts={setPosts}/>)}
           </tbody>
         </table>
     </div>

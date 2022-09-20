@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axiosInstance from "../../axios";
 
-const MonthPosts = ({post, month, setPosts}) => {
+const MonthPosts = ({post, month, setPosts, year}) => {
     const currentMonth = new Date().getMonth();
     const month_string = new Date(0, month).toLocaleString('pl', {month: 'long'})
+    const [date, setDate] = useState(new Date(year, month + 1).toISOString().slice(0,10))
+    
+    useEffect(() => {
+        const newDate = new Date(year, month + 1).toISOString().slice(0,10)
+        setDate(newDate);
+    }, [year]);
+    
+    useEffect(() => {
+        setForm(prev => ({
+            ...prev,
+            date: date
+        }))
+    }, [date]);
 
     const initialForm = Object.freeze({
-        date: '',
+        date: date,
         user: 1,
         sent_all: '',
         sent: '',
@@ -25,6 +39,32 @@ const MonthPosts = ({post, month, setPosts}) => {
         }))
     }
 
+    const editPost = () => {
+        const form_cleaned = Object.fromEntries(Object.entries(form).filter(([_, v]) => v !== ''))
+        axiosInstance
+        .patch('posts/' + post.id + '/', JSON.stringify(form_cleaned))
+        .then(res => {
+            if(res.status === 200){
+                setPosts(res.data);
+                setEditable(prev => !prev)
+                setForm(initialForm);
+            }
+        })
+    }
+
+    const savePost = () => {
+        const form_cleaned = Object.fromEntries(Object.entries(form).filter(([_, v]) => v !== ''))
+        axiosInstance
+        .post('posts/', JSON.stringify(form_cleaned))
+        .then(res => {
+            if(res.status === 200){
+                setPosts(res.data);
+                setEditable(prev => !prev)
+                setForm(initialForm);
+            }
+        })
+    }
+
   return (
     <>
         <tr className={editable ? "month-row-editing" : ""}>
@@ -41,11 +81,12 @@ const MonthPosts = ({post, month, setPosts}) => {
                     <td className="input-cell"><input type="number" name="received" value={form.received} onChange={(e) => handleChange(e)}/></td>
                     <td className="input-cell"><input type="number" name="sent_all" value={form.sent_all} onChange={(e) => handleChange(e)}/></td>
                     <td className="input-cell"><input type="number" name="sent" value={form.sent} onChange={(e) => handleChange(e)}/></td>
-                    <td className="input-cell options transition pointer" colSpan={3}>Zapisz</td>
-                    <td className="input-cell options transition pointer" colSpan={3} onClick={() => setEditable(prev => !prev)}>Anuluj</td>
+                    <td className="input-cell options transition pointer" onClick={ typeof post === 'undefined' ? savePost : editPost } colSpan={3}>Zapisz</td>
+                    <td className="input-cell options transition pointer" colSpan={4} onClick={() => setEditable(prev => !prev)}>Anuluj</td>
                 </>
                 : typeof post === 'undefined'
                 ? <>
+                    <td>-</td>
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
@@ -72,6 +113,7 @@ const MonthPosts = ({post, month, setPosts}) => {
                     <td>{post.consumption_average}</td>
                     <td>{post.energy_surplus}</td>
                     <td>{post.balance.toFixed(2)} zł</td>
+                    <td>{post.saved_funds.toFixed(2)} zł</td>
                 </>
             }
         </tr>
