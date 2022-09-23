@@ -9,7 +9,7 @@ const MonthPosts = ({post, month, setPosts, year}) => {
     useEffect(() => {
         const newDate = new Date(year, month + 1).toISOString().slice(0,10)
         setDate(newDate);
-    }, [year]);
+    }, [year, month]);
     
     useEffect(() => {
         setForm(prev => ({
@@ -65,6 +65,18 @@ const MonthPosts = ({post, month, setPosts, year}) => {
         })
     }
 
+    const deletePost = () => {
+        axiosInstance
+        .delete('posts/' + post.id + '/')
+        .then(res => {
+            if(res.status === 200){
+                setPosts(prev => Object.fromEntries(Object.entries(prev).filter(([key, value]) => parseInt(key) !== month + 1)));
+                setEditable(prev => !prev)
+                setForm(initialForm);
+            }
+        })
+    }
+
   return (
     <>
         <tr className={editable ? "month-row-editing" : ""}>
@@ -82,7 +94,8 @@ const MonthPosts = ({post, month, setPosts, year}) => {
                     <td className="input-cell"><input type="number" name="sent_all" value={form.sent_all} onChange={(e) => handleChange(e)}/></td>
                     <td className="input-cell"><input type="number" name="sent" value={form.sent} onChange={(e) => handleChange(e)}/></td>
                     <td className="input-cell options transition pointer" onClick={ typeof post === 'undefined' ? savePost : editPost } colSpan={3}>Zapisz</td>
-                    <td className="input-cell options transition pointer" colSpan={4} onClick={() => setEditable(prev => !prev)}>Anuluj</td>
+                    <td className="input-cell options transition pointer" colSpan={2} onClick={() => setEditable(prev => !prev)}>Anuluj</td>
+                    <td className="input-cell options transition pointer" colSpan={2} onClick={deletePost}>Usuń</td>
                 </>
                 : typeof post === 'undefined'
                 ? <>

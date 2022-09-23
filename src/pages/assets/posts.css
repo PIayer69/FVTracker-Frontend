@@ -1,9 +1,12 @@
+@import url('colors.css');
+
 .posts-container{
     width: 100%;
-    display: flex;
+    text-align: center;
+    /* display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column; */
 }
 
 .posts-top-container{
@@ -15,18 +18,18 @@
 }
 
 .year-select-container{
-    background-color: #878;
+    background-color: var(--highlight);
     width: fit-content;
     padding: .5rem;
     border-radius: 5px;
 }
 
 .year-select-container:hover .year-select{
-    background-color: #767;
+    background-color: var(--secondary);
 }
 
 .year-select{
-    background-color: #878;
+    background-color: var(--highlight);
     border: 0;
     border-radius: 5px;
     padding: .3rem;
@@ -37,25 +40,23 @@ table{
     border-collapse: collapse;
     border: 1px solid black;
     table-layout: fixed;
+    padding: 1rem;
+    margin: 0 auto;
 }
 
 table tr td, th{
     border-bottom: 1px solid black;
-    padding: .3rem;
-    width: 8rem;
+    padding: .6rem;
+    width: fit-content;
     text-align: center;
 }
 
 table td:nth-child(even){
-    background-color: #767;
+    background-color: var(--highlight);
 }
 
 table thead th{
-    background-color: #767;
-    border: 1px solid black;
-}
-
-.month-row-editing{
+    background-color: var(--highlight);
     border: 1px solid black;
 }
 
@@ -70,24 +71,24 @@ table thead th{
 }
 
 .month-cell:hover{
-    background-color: #878;
+    background-color: var(--secondary);
 }
 
 .input-cell input{
     width: 100%;
-    background-color: #656;
+    background-color: var(--secondary);
     border: 0;
 }
 
 .input-cell:nth-child(odd){
-    background-color: #767;
+    background-color: var(--highlight);
 }
 .input-cell:nth-child(even){
-    background-color: #656;
+    background-color: var(--secondary);
 }
 
 .input-cell:nth-child(odd) input{
-    background-color: #767;
+    background-color: var(--highlight);
 }
 
 .input-cell input:focus{
@@ -99,6 +100,6 @@ input[type=number]{
 }
 
 .options:hover{
-    background-color: #878;
+    background-color: var(--main);
 }
 

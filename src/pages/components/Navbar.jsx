@@ -12,10 +12,15 @@ const Navbar = () => {
             <ul>
                 {
                     localStorage.getItem('access_token')
-                    ? <></>
+                    ? <>
+                        <li onClick={() => navigate('/settings')}>Ustawienia</li>
+                        <li onClick={() => navigate('/welcome')}>Strona główna</li>
+                    </>
                     :<>
-                        <li onClick={() => navigate('/welcome/login')}>Login</li>
-                        <li onClick={() => navigate('/welcome/register')}>Register</li>
+                        <li onClick={() => navigate('/')}>Strona główna</li>
+                        <li onClick={() => navigate('/settings')}>Ustawienia</li>
+                        <li onClick={() => navigate('/welcome/login')}>Logowanie</li>
+                        <li onClick={() => navigate('/welcome/register')}>Rejestracja</li>
                     </>
                 }
                 
