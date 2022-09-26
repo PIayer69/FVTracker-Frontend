@@ -4,7 +4,6 @@ import '../assets/settings.css';
 
 const Settings = () => {
     const months = Array.from({length: 12}, (item, i) => new Date(0, i).toLocaleString('pl-PL', {month: 'long'}));
-    console.log(months)
     const settlement_periods = {
         1: '1 miesiąc',
         2: '2 miesiące',
@@ -13,7 +12,7 @@ const Settings = () => {
     };
     const rules = {
         metering: 'Net-Metering (stare zasady)',
-        biling: 'Net-Billing (nowe zasady)',
+        billing: 'Net-Billing (nowe zasady)',
     }
     const initialSettings = Object.freeze({
         id: 2,
@@ -46,6 +45,19 @@ const Settings = () => {
             }))
         }
     };
+
+    const saveSettings = (e) => {
+        e.preventDefault();
+
+        axiosInstance
+        .patch('user/1/', JSON.stringify(settings))
+        .then(res => {
+            console.log(res)
+            if(res.status === 200){
+                console.log('success')
+            }
+        })
+    }
 
   return (
     <div className="settings-container">
@@ -97,7 +109,7 @@ const Settings = () => {
                         </select>
                     </span>
                 </div>
-                <input type="submit" value="Zapisz"/>
+                <input type="submit" onClick={(e) => saveSettings(e)} value="Zapisz"/>
             </form>
     </div>
   )

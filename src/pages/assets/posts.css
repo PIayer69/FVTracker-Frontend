@@ -3,10 +3,6 @@
 .posts-container{
     width: 100%;
     text-align: center;
-    /* display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column; */
 }
 
 .posts-top-container{
@@ -17,15 +13,26 @@
     padding: .3rem 1rem;
 }
 
-.year-select-container{
-    background-color: var(--highlight);
-    width: fit-content;
-    padding: .5rem;
-    border-radius: 5px;
+.options-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.year-select-container:hover .year-select{
+.options-container div{
+    margin-left: 1rem;
+    background-color: var(--highlight);
+    border-radius: 5px;
+    padding: .5rem 1rem;
+    width: fit-content;
+    user-select: none;
+    transition: .3s background ease;
+}
+
+.year-select-container:hover .year-select, .recalculate-btn:hover{
     background-color: var(--secondary);
+    outline: 3px solid var(--main);
+    outline-offset: -1px;
 }
 
 .year-select{
@@ -34,6 +41,7 @@
     border-radius: 5px;
     padding: .3rem;
     margin-left: .3rem;
+    transition: .3s background ease;
 }
 
 table{
@@ -45,10 +53,13 @@ table{
 }
 
 table tr td, th{
-    border-bottom: 1px solid black;
-    padding: .6rem;
+    padding: .3rem;
     width: fit-content;
     text-align: center;
+}
+
+table tr{
+    border-bottom: 1px solid black;
 }
 
 table td:nth-child(even){
@@ -57,7 +68,7 @@ table td:nth-child(even){
 
 table thead th{
     background-color: var(--highlight);
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .month-row-editing td{
@@ -103,3 +114,7 @@ input[type=number]{
     background-color: var(--main);
 }
 
+
+.sum-row-bottom{
+    border-bottom: 3px dashed black;
+}

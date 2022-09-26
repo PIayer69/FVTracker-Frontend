@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../../axios";
 
-const MonthPosts = ({post, month, setPosts, year}) => {
+const MonthPosts = ({post, month, setPosts, year, settings, settlementMonths}) => {
     const currentMonth = new Date().getMonth();
-    const month_string = new Date(0, month).toLocaleString('pl', {month: 'long'})
-    const [date, setDate] = useState(new Date(year, month + 1).toISOString().slice(0,10))
+    const month_string = new Date(0, month - 1).toLocaleString('pl', {month: 'long'})
+    const [date, setDate] = useState(new Date(year, month).toISOString().slice(0,10))
     
     useEffect(() => {
-        const newDate = new Date(year, month + 1).toISOString().slice(0,10)
+        const newDate = new Date(year, month).toISOString().slice(0,10)
         setDate(newDate);
     }, [year, month]);
     
@@ -81,7 +81,7 @@ const MonthPosts = ({post, month, setPosts, year}) => {
     <>
         <tr className={editable ? "month-row-editing" : ""}>
             <td className='month-cell pointer' onClick={() => setEditable(prev => !prev)}>
-                {month_string} {currentMonth === parseInt(month) ? '(teraz)' : ''}
+                {month_string} {currentMonth === parseInt(month - 1) ? '(teraz)' : ''}
             </td>
             {
 
@@ -130,6 +130,30 @@ const MonthPosts = ({post, month, setPosts, year}) => {
                 </>
             }
         </tr>
+        {
+            settlementMonths.includes(month)
+            && 
+            <>
+                <tr>
+                    <td colSpan={3} rowSpan={2}>Podsumowanie okresu:</td>
+                    <td colSpan={4}></td>
+                    <td>Średnia:</td>
+                    <td></td>
+                    <td>Łącznie:</td>
+                    <td>Średnia:</td>
+                    <td colSpan={2} rowSpan={2}>Nadmiar</td>
+                    <td>Łącznie:</td>
+                </tr>
+                <tr className="sum-row-bottom">
+                    <td colSpan={4}></td>
+                    <td>-</td>
+                    <td></td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            </>
+        }
     </>
   )
 }
