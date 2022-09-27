@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <nav>
         <div className='nav-container'>
-            Logo
+            <span className='pointer' onClick={() => navigate('/')}>Logo</span>
             <ul>
                 {
                     localStorage.getItem('access_token')

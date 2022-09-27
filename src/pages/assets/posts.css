@@ -72,7 +72,7 @@ table thead th{
 }
 
 .month-row-editing td{
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .month-cell{
@@ -85,21 +85,19 @@ table thead th{
     background-color: var(--secondary);
 }
 
+.disabled-cell{
+    background-color: var(--main) !important;
+}
+
+.input-cell{
+    background-color: var(--secondary) !important;
+}
+
 .input-cell input{
     width: 100%;
     background-color: var(--secondary);
     border: 0;
-}
-
-.input-cell:nth-child(odd){
-    background-color: var(--highlight);
-}
-.input-cell:nth-child(even){
-    background-color: var(--secondary);
-}
-
-.input-cell:nth-child(odd) input{
-    background-color: var(--highlight);
+    border-bottom: 1px solid black;
 }
 
 .input-cell input:focus{
@@ -110,8 +108,14 @@ input[type=number]{
     -moz-appearance: textfield;
 }
 
-.options:hover{
+.options-cell{
+    background-color: var(--secondary) !important;
+}
+
+.options-cell:hover{
     background-color: var(--main);
+    outline: 3px solid var(--main);
+    outline-offset: -1.5px;
 }
 
 

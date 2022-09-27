@@ -63,11 +63,11 @@ const Posts = () => {
   }, []);
 
   useEffect(() => {
-    const period = settings.settlement_period
-    const month = settings.settlement_month
-    const settlement_months = Array.from({length: 12/period}).map((item, i) => months[(month + i * period - 1)%12])
-    settlement_months.sort((a, b) => a-b)
-    setSettlementMonths(settlement_months)
+    const period = settings.settlement_period;
+    const month = settings.settlement_month;
+    const settlement_months = Array.from({length: 12/period}).map((item, i) => months[(month + i * period - 1)%12]);
+    settlement_months.sort((a, b) => a-b);
+    setSettlementMonths(settlement_months);
   // eslint-disable-next-line
   }, [settings]);
 
@@ -128,7 +128,7 @@ const Posts = () => {
           </thead>
 
           <tbody>
-            {months.map((month) => <MonthPosts key={month} month={months[month - 1]} post={posts[month]} year={year} setPosts={setPosts} settings={settings} settlementMonths={settlementMonths} />)}
+            {months.map((month) => <MonthPosts key={month} month={months[month - 1]} post={posts[month]} year={year} setPosts={setPosts} settings={settings} settlementMonth={settlementMonths.includes(month)} />)}
           </tbody>
         </table>
     </div>

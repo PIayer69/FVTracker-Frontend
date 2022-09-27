@@ -77,6 +77,24 @@ const Settings = () => {
                         
                         <label htmlFor="sent_start">Wysłane 2.8.0 (wartość początkowa)</label>
                         <input type="text" pattern="[0-9]*" name="sent_start" value={settings.sent_start} onChange={(e) => handleChange(e)}/>
+
+                        <label htmlFor="produced_input">Wprowadzanie danych (falownik)</label>
+                        <select name="produced_input" value={settings.produced_input} onChange={(e) => handleChange(e)}>
+                            <option value="all">Ogólnie</option>
+                            <option value="month">Miesiąc</option>
+                        </select>
+
+                        <label htmlFor="received_input">Wprowadzanie danych (pobrane 1.8.0)</label>
+                        <select name="received_input" value={settings.received_input} onChange={(e) => handleChange(e)}>
+                            <option value="all">Ogólnie</option>
+                            <option value="month">Miesiąc</option>
+                        </select>
+
+                        <label htmlFor="sent_input">Wprowadzanie danych (wysłane 2.8.0)</label>
+                        <select name="sent_input" value={settings.sent_input} onChange={(e) => handleChange(e)}>
+                            <option value="all">Ogólnie</option>
+                            <option value="month">Miesiąc</option>
+                        </select>
                     </span>
                     <span className="form-section">
                         <div className="section-title">Ustawienia rozliczenia instalacji</div>

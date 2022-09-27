@@ -1,37 +1,45 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../../axios";
 
-const MonthPosts = ({post, month, setPosts, year, settings, settlementMonths}) => {
+const MonthPosts = ({post, month, setPosts, year, settings, settlementMonth}) => {
     const currentMonth = new Date().getMonth();
     const month_string = new Date(0, month - 1).toLocaleString('pl', {month: 'long'})
     const [date, setDate] = useState(new Date(year, month).toISOString().slice(0,10))
-    
+    const initialForm = Object.freeze({
+        date: date,
+        user: 1,
+        produced_all: '',
+        produced: '',
+        received_all: '',
+        received: '',
+        sent_all: '',
+        sent: ''
+    })
+    const [form, setForm] = useState(typeof post == "undefined" ? initialForm : post);
+    const [editable, setEditable] = useState(false);
+
+    // Updating inputs value after post is saved
+    useEffect(() => {
+        if(typeof post !== 'undefined'){
+            setForm(post);
+        }
+    }, [post])
+
+    // Updating date when selected year is changed
     useEffect(() => {
         const newDate = new Date(year, month).toISOString().slice(0,10)
         setDate(newDate);
     }, [year, month]);
     
+    //Setting updated date to form
     useEffect(() => {
         setForm(prev => ({
             ...prev,
             date: date
         }))
     }, [date]);
-
-    const initialForm = Object.freeze({
-        date: date,
-        user: 1,
-        sent_all: '',
-        sent: '',
-        produced: '',
-        produced_all: '',
-        received: '',
-        received_all: ''
-    })
-    const [form, setForm] = useState(typeof post === 'undefined' ? initialForm : post);
-
-    const [editable, setEditable] = useState(false);
-
+  
+    //Inputs handler
     const handleChange = (e) => {
         setForm((prev) => ({
             ...prev,
@@ -48,9 +56,9 @@ const MonthPosts = ({post, month, setPosts, year, settings, settlementMonths}) =
                 setPosts(res.data);
                 setEditable(prev => !prev)
                 setForm(initialForm);
-            }
-        })
-    }
+            };
+        });
+    };
 
     const savePost = () => {
         const form_cleaned = Object.fromEntries(Object.entries(form).filter(([_, v]) => v !== ''))
@@ -61,21 +69,21 @@ const MonthPosts = ({post, month, setPosts, year, settings, settlementMonths}) =
                 setPosts(res.data);
                 setEditable(prev => !prev)
                 setForm(initialForm);
-            }
-        })
-    }
+            };
+        });
+    };
 
     const deletePost = () => {
         axiosInstance
         .delete('posts/' + post.id + '/')
         .then(res => {
             if(res.status === 200){
-                setPosts(prev => Object.fromEntries(Object.entries(prev).filter(([key, value]) => parseInt(key) !== month + 1)));
+                setPosts(prev => Object.fromEntries(Object.entries(prev).filter(([key, value]) => parseInt(key) !== month)));
                 setEditable(prev => !prev)
                 setForm(initialForm);
-            }
-        })
-    }
+            };
+        });
+    };
 
   return (
     <>
@@ -84,18 +92,49 @@ const MonthPosts = ({post, month, setPosts, year, settings, settlementMonths}) =
                 {month_string} {currentMonth === parseInt(month - 1) ? '(teraz)' : ''}
             </td>
             {
-
                 editable
                 ? <>
-                    <td className="input-cell"><input type="number" name="produced_all" value={form.produced_all} onChange={(e) => handleChange(e)}/></td>
-                    <td className="input-cell"><input type="number" name="produced" value={form.produced} onChange={(e) => handleChange(e)}/></td>
-                    <td className="input-cell"><input type="number" name="received_all" value={form.received_all} onChange={(e) => handleChange(e)}/></td>
-                    <td className="input-cell"><input type="number" name="received" value={form.received} onChange={(e) => handleChange(e)}/></td>
-                    <td className="input-cell"><input type="number" name="sent_all" value={form.sent_all} onChange={(e) => handleChange(e)}/></td>
-                    <td className="input-cell"><input type="number" name="sent" value={form.sent} onChange={(e) => handleChange(e)}/></td>
-                    <td className="input-cell options transition pointer" onClick={ typeof post === 'undefined' ? savePost : editPost } colSpan={3}>Zapisz</td>
-                    <td className="input-cell options transition pointer" colSpan={2} onClick={() => setEditable(prev => !prev)}>Anuluj</td>
-                    <td className="input-cell options transition pointer" colSpan={2} onClick={deletePost}>Usuń</td>
+                    {
+                        settings.produced_input === 'all'
+                        ? <>
+                            <td className="input-cell"><input type="number" name="produced_all" value={form.produced_all} onChange={(e) => handleChange(e)}/></td>
+                            <td className="disabled-cell"></td>
+                        </>
+                        : <> 
+                            <td className="disabled-cell"></td>
+                            <td className="input-cell"><input type="number" name="produced" value={form.produced} onChange={(e) => handleChange(e)}/></td>
+                        </>
+                    }
+                    {
+                        settings.received_input === 'all'
+                        ? <>
+                            <td className="input-cell"><input type="number" name="received_all" value={form.received_all} onChange={(e) => handleChange(e)}/></td>
+                            <td className="disabled-cell"></td>
+                        </>
+                        : <> 
+                            <td className="disabled-cell"></td>
+                            <td className="input-cell"><input type="number" name="received" value={form.received} onChange={(e) => handleChange(e)}/></td>
+                        </>
+                    }
+                    {
+                        settings.sent_input === 'all'
+                        ? <> 
+                            <td className="input-cell"><input type="number" name="sent_all" value={form.sent_all} onChange={(e) => handleChange(e)}/></td>
+                            <td className="disabled-cell"></td>
+                        </>
+                        : <>
+                            <td className="disabled-cell"></td>
+                            <td className="input-cell"><input type="number" name="sent" value={form.sent} onChange={(e) => handleChange(e)}/></td>
+                        </>
+                    }
+                    
+                    
+                    
+                    
+                   
+                    <td className="options-cell pointer" onClick={ typeof post === 'undefined' ? savePost : editPost } colSpan={3}>Zapisz</td>
+                    <td className="options-cell pointer" colSpan={2} onClick={() => setEditable(prev => !prev)}>Anuluj</td>
+                    <td className="options-cell pointer" colSpan={2} onClick={deletePost}>Usuń</td>
                 </>
                 : typeof post === 'undefined'
                 ? <>
@@ -131,7 +170,7 @@ const MonthPosts = ({post, month, setPosts, year, settings, settlementMonths}) =
             }
         </tr>
         {
-            settlementMonths.includes(month)
+            settlementMonth
             && 
             <>
                 <tr>
